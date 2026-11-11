@@ -1,0 +1,35 @@
+{
+  "configured": false,
+  "brand_name": "Tên Thương Hiệu",
+  "brand_tagline": "Khẩu hiệu ngắn",
+  "editor_name": "Họ và tên người biên soạn",
+  "editor_title": "Chức danh · Công ty",
+  "assistant_name": "Trợ lý",
+  "xung_ho": { "tro_ly": "em", "nguoi_dung": "anh/chị" },
+  "colors": {
+    "background": "#060f22",
+    "accent_1": "#e11d2a",
+    "accent_2": "#f4b423"
+  },
+  "logo": {
+    "dark_bg": "logo-dark.png",
+    "light_bg": "logo-light.png"
+  },
+  "library": {
+    "domain": "",
+    "netlify_site_name": "",
+    "netlify_site_id": "",
+    "title": "Thư viện bài học",
+    "pinned_slug": ""
+  },
+  "cta_products": [
+    {
+      "name": "Tên chương trình",
+      "register_url": "https://...",
+      "note": "Mọi giá, cọc, quyền lợi phải do chủ thương hiệu cung cấp"
+    }
+  ],
+  "ten_rieng": {
+    "Philip Cotler": "Philip Kotler"
+  }
+}

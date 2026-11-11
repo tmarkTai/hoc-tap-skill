@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tên ebook | Ebook · {{BRAND_NAME}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy-900:#060f22; --navy-800:#0a1a38; --line:#1d3763; --line-2:#16294c;
+    --red:#e11d2a; --red-soft:#ff3b47;
+    --gold:#f4b423; --gold-soft:#ffd15c;
+    --white:#f2f6ff; --muted:#9fb2d4; --muted-2:#6f83a8;
+    --card:#0b1a39; --card-2:#0d2047; --aqua:#4a9ae0; --green:#5fcf8a;
+    --paper:rgba(255,255,255,.028);
+    --bg-panel:rgba(11,26,57,.72); --bg-cta:rgba(11,26,57,.8); --bg-bar:rgba(6,15,34,.95);
+    --bg-step:#060f22; --bg-shot:#0a1730; --sep:rgba(255,255,255,.07); --dot:rgba(255,255,255,.09);
+    --hand:'Caveat','Bradley Hand','Noteworthy','Segoe Script',cursive;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+    color:var(--white);line-height:1.75;font-size:16.5px;-webkit-font-smoothing:antialiased;
+    background:
+      linear-gradient(var(--paper) 1px,transparent 1px) 0 0/100% 30px,
+      linear-gradient(90deg,var(--paper) 1px,transparent 1px) 0 0/30px 100%,
+      radial-gradient(1100px 520px at 82% -8%,#122a52 0%,transparent 62%),
+      var(--navy-900);}
+  a{color:inherit;}
+  .hand{font-family:var(--hand);}
+  .mlogo{background-image:url("{{LOGO_DARK}}");background-repeat:no-repeat;background-position:left center;background-size:contain;}
+
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--red);z-index:120;transition:width .12s linear;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  .layout{display:grid;grid-template-columns:220px 1fr;gap:52px;align-items:start;}
+  @media(max-width:980px){.layout{grid-template-columns:1fr;gap:0;}}
+
+  /* ---------- BÌA ---------- */
+  header.cover{border-bottom:1px solid var(--line-2);}
+  .cover-in{max-width:1120px;margin:0 auto;padding:38px 24px 52px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:52px;}
+  .topbar .tg{font-size:9.5px;letter-spacing:.36em;color:var(--muted-2);text-transform:uppercase;}
+  .eyebrow{font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--red-soft);font-weight:700;}
+  h1{font-size:clamp(34px,6vw,64px);line-height:1.03;font-weight:800;letter-spacing:-1.4px;margin:16px 0 0;max-width:16ch;}
+  h1 em{font-style:normal;color:var(--gold);}
+  .sub{margin-top:20px;font-size:18px;color:var(--muted);max-width:54ch;}
+  .sub b{color:var(--white);font-weight:600;}
+  .credits{margin-top:38px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid var(--line-2);}
+  .credits div{padding:16px 20px 16px 0;border-right:1px solid var(--line-2);}
+  .credits div:last-child{border-right:none;}
+  @media(max-width:700px){.credits div{border-right:none;border-bottom:1px solid var(--line-2);}}
+  .credits .k{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);}
+  .credits .v{font-size:14.5px;font-weight:600;margin-top:3px;}
+  .credits .v small{display:block;font-weight:400;font-size:12.5px;color:var(--muted);}
+
+  /* ---------- THANH CHƯƠNG ---------- */
+  .chapbar{position:sticky;top:0;z-index:100;background:var(--bg-bar);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2);}
+  .chapbar .in{max-width:1120px;margin:0 auto;padding:0 24px;display:flex;overflow-x:auto;}
+  .chapbar button{appearance:none;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);
+    font-family:inherit;font-size:13.5px;font-weight:600;padding:15px 20px 13px;cursor:pointer;white-space:nowrap;text-align:left;transition:.18s;}
+  .chapbar button .d{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);font-weight:700;margin-bottom:3px;}
+  .chapbar button:hover{color:var(--white);}
+  .chapbar button.on{color:var(--white);border-bottom-color:var(--red);}
+  .chapbar button.on .d{color:var(--red-soft);}
+  .chapbar button.cta.on{border-bottom-color:var(--gold);}
+  .chapbar button.cta.on .d{color:var(--gold);}
+
+  .panel-ch{display:none;} .panel-ch.on{display:block;}
+
+  /* ---------- MỞ CHƯƠNG ---------- */
+  .chap-open{padding:44px 0 30px;border-bottom:1px solid var(--line-2);margin-bottom:38px;}
+  .chap-open .n{font-family:var(--hand);font-size:56px;line-height:1;color:var(--red);opacity:.9;}
+  .chap-open h2{font-size:clamp(27px,4.6vw,42px);line-height:1.12;font-weight:800;letter-spacing:-.8px;margin:6px 0 0;}
+  .chap-open h2 em{font-style:normal;color:var(--gold);}
+  .chap-open .dk{color:var(--muted);font-size:17px;margin-top:14px;max-width:58ch;}
+
+  /* ---------- TOC ---------- */
+  nav.toc{position:sticky;top:74px;font-size:13.5px;padding-top:6px;}
+  @media(max-width:980px){nav.toc{display:none;}}
+  nav.toc .tt{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2);margin:0 0 12px 14px;}
+  nav.toc a{display:block;text-decoration:none;color:var(--muted);padding:7px 14px;border-left:2px solid var(--line-2);transition:.18s;}
+  nav.toc a:hover{color:var(--white);border-left-color:var(--muted-2);}
+  nav.toc a.active{color:var(--white);border-left-color:var(--red);font-weight:600;}
+
+  main{padding-bottom:30px;}
+  section{margin-bottom:70px;scroll-margin-top:90px;}
+  .sh{border-top:2px solid var(--red);padding-top:14px;margin-bottom:10px;}
+  .sh .rm{font-size:11.5px;letter-spacing:.22em;color:var(--red-soft);font-weight:700;text-transform:uppercase;}
+  .sh h3{font-size:clamp(21px,3.4vw,30px);line-height:1.2;font-weight:800;letter-spacing:-.5px;margin:6px 0 0;}
+  .sh .dk{color:var(--muted);font-size:15px;margin-top:8px;max-width:60ch;}
+  h4{font-size:19px;font-weight:700;letter-spacing:-.2px;margin:36px 0 10px;}
+  h4 .idx{color:var(--red-soft);margin-right:9px;}
+  h5{font-size:15.5px;font-weight:700;margin:24px 0 6px;color:var(--gold-soft);}
+  p{margin:0 0 15px;}
+  .lede{font-size:18px;color:#e6ecfa;}
+  .mut{color:var(--muted);}
+  .en{color:var(--muted-2);font-style:italic;font-size:.9em;}
+  strong{font-weight:600;color:var(--white);}
+  .gold{color:var(--gold-soft);}
+
+  ul,ol{margin:0 0 16px;padding-left:22px;}
+  li{margin:8px 0;}
+  li::marker{color:var(--red-soft);}
+  ul.dash{list-style:none;padding-left:0;}
+  ul.dash li{padding-left:22px;position:relative;}
+  ul.dash li:before{content:"—";position:absolute;left:0;color:var(--muted-2);}
+
+  blockquote{margin:26px 0;padding:2px 0 2px 22px;border-left:3px solid var(--gold);}
+  blockquote p{font-size:20px;font-weight:600;line-height:1.5;color:var(--white);margin:0;}
+  blockquote cite{display:block;font-style:normal;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);margin-top:9px;}
+  blockquote.big p{font-size:clamp(21px,3vw,28px);}
+  blockquote.red{border-left-color:var(--red);}
+
+  .panel{border:1px solid var(--line-2);border-radius:4px;background:var(--bg-panel);padding:22px 26px;margin:22px 0;}
+  .panel .pt{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2);margin-bottom:10px;}
+
+  .note{margin:26px 0;padding:16px 20px 16px 22px;background:rgba(244,180,35,.055);border-left:2px solid var(--gold);font-size:14.5px;color:#cfd9ee;}
+  .note b{color:var(--gold-soft);}
+  .note .lb{font-family:var(--hand);font-size:20px;color:var(--gold);display:block;margin-bottom:2px;}
+
+  table{width:100%;border-collapse:collapse;margin:22px 0;font-size:15px;}
+  th,td{text-align:left;padding:13px 14px 13px 0;border-bottom:1px solid var(--line-2);vertical-align:top;}
+  th{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);font-weight:600;border-bottom-color:var(--line);}
+  td.n{width:40px;color:var(--red-soft);font-weight:800;padding-right:0;}
+  td b{color:var(--white);}
+  tr.hi td{background:rgba(225,29,42,.06);}
+
+  .chain{margin:22px 0;}
+  .chain .lk{display:flex;gap:16px;align-items:flex-start;padding:11px 0;border-bottom:1px dotted var(--dot);}
+  .chain .lk:last-child{border-bottom:none;}
+  .chain .ar{flex:none;color:var(--gold);font-size:15px;line-height:1.75;width:16px;}
+  .chain b{color:var(--gold-soft);font-weight:600;}
+
+  .duo{display:grid;grid-template-columns:1fr 1fr;margin:22px 0;border:1px solid var(--line-2);}
+  @media(max-width:640px){.duo{grid-template-columns:1fr;}}
+  .duo>div{padding:20px 22px;}
+  .duo>div:first-child{border-right:1px solid var(--line-2);}
+  @media(max-width:640px){.duo>div:first-child{border-right:none;border-bottom:1px solid var(--line-2);}}
+  .duo .h{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);margin-bottom:8px;}
+  .duo .b{font-size:17px;font-weight:700;}
+  .duo .d{font-size:14.5px;color:var(--muted);margin-top:6px;}
+  .duo .neg .b{color:#ff8f96;} .duo .pos .b{color:#7fe6a5;}
+
+  figure{margin:30px 0;}
+  figure svg,figure img{width:100%;height:auto;display:block;}
+  figcaption{font-size:12.5px;color:var(--muted-2);margin-top:10px;border-top:1px solid var(--line-2);padding-top:9px;}
+  .fg-wrap{border:1px solid var(--line-2);background:
+      linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px) 0 0/100% 26px,
+      linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px) 0 0/26px 100%,
+      #081533;padding:18px 14px;border-radius:3px;}
+  .shot{border:1px solid var(--line-2);border-radius:3px;overflow:hidden;line-height:0;background:var(--bg-shot);}
+
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2);margin:22px 0;}
+  @media(max-width:720px){.steps{grid-template-columns:1fr 1fr;}}
+  .steps div{background:var(--bg-step);padding:18px 16px;}
+  .steps .s{font-family:var(--hand);font-size:30px;color:var(--gold);line-height:1;}
+  .steps .t{font-size:13.5px;color:var(--muted);margin-top:7px;}
+
+  .wow{background:radial-gradient(500px 200px at 50% 0%,rgba(244,180,35,.14),transparent),linear-gradient(160deg,var(--card-2),var(--card));
+    border:1px solid rgba(244,180,35,.35);border-radius:6px;padding:28px 24px;text-align:center;margin:24px 0;}
+  .wow .lbl{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted-2);margin-bottom:12px;}
+  .wow .eq{font-size:clamp(18px,3.2vw,29px);font-weight:800;letter-spacing:-.3px;line-height:1.35;}
+  .wow .eq .p1{color:var(--white);} .wow .eq .op{color:var(--gold);margin:0 10px;} .wow .eq .p2{color:var(--red-soft);}
+  .wow .eq .res{background:linear-gradient(120deg,var(--gold),var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .wow .note2{font-size:14px;color:var(--muted);margin-top:14px;}
+
+  /* ---------- CTA cuối chương ---------- */
+  .cta{border:1px solid rgba(244,180,35,.4);border-radius:6px;background:linear-gradient(160deg,rgba(244,180,35,.07),var(--bg-cta));
+    padding:30px 30px 26px;margin:44px 0 10px;}
+  .cta .lb{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .cta h3{font-size:clamp(21px,3.2vw,28px);font-weight:800;letter-spacing:-.4px;margin:8px 0 6px;}
+  .cta .sub2{color:var(--muted);font-size:15px;margin-bottom:18px;}
+  .todo{list-style:none;padding:0;margin:0;}
+  .todo li{position:relative;padding:12px 0 12px 42px;border-bottom:1px solid var(--sep);font-size:15.5px;}
+  .todo li:last-child{border-bottom:none;}
+  .todo li:before{content:"";position:absolute;left:6px;top:16px;width:16px;height:16px;border:1.5px solid var(--gold);border-radius:3px;}
+  .todo li b{color:var(--gold-soft);font-weight:600;}
+  .todo li span.q{display:block;font-size:13.5px;color:var(--muted-2);margin-top:3px;font-style:italic;}
+
+  .navrow{border-top:1px solid var(--line-2);margin-top:26px;padding-top:22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .navrow button{appearance:none;background:none;border:1px solid var(--line-2);border-radius:4px;color:var(--muted);
+    font-family:inherit;font-size:13.5px;padding:12px 18px;cursor:pointer;transition:.18s;}
+  .navrow button:hover{color:var(--white);border-color:var(--muted-2);}
+  .navrow button b{color:var(--gold-soft);font-weight:600;}
+
+  /* ---------- trang CTA cuối ---------- */
+  .final-hero{text-align:left;padding:44px 0 8px;}
+  .final-hero .n{font-family:var(--hand);font-size:52px;color:var(--gold);line-height:1;}
+  .final-hero h2{font-size:clamp(28px,5vw,46px);font-weight:800;letter-spacing:-1px;line-height:1.1;margin:8px 0 0;}
+  .final-hero h2 em{font-style:normal;color:var(--gold);}
+  .final-hero p{font-size:18px;color:var(--muted);max-width:56ch;margin-top:16px;}
+  .deck{display:grid;gap:26px;margin:26px 0 8px;}
+  .deck figure{margin:0;}
+  .deck .cap{font-size:13px;color:var(--muted);margin-top:10px;padding-top:9px;border-top:1px solid var(--line-2);}
+  .deck .cap b{color:var(--gold-soft);font-weight:600;display:block;margin-bottom:3px;font-size:14px;}
+  .bigcta{border:1px solid rgba(244,180,35,.5);border-radius:6px;background:linear-gradient(150deg,rgba(244,180,35,.14),var(--bg-cta));
+    padding:34px 32px;margin:34px 0 0;text-align:center;}
+  .bigcta .t{font-size:clamp(22px,3.4vw,32px);font-weight:800;letter-spacing:-.5px;}
+  .bigcta .u{display:inline-block;margin-top:16px;font-family:var(--hand);font-size:30px;color:var(--gold);
+    border-bottom:2px solid rgba(244,180,35,.5);padding-bottom:2px;word-break:break-all;}
+  .bigcta .d{color:var(--muted);font-size:15px;margin-top:14px;}
+
+  footer{border-top:1px solid var(--line);margin-top:44px;padding:34px 0 56px;}
+  .fgrid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;}
+  .fgrid .l{max-width:52ch;font-size:12.5px;color:var(--muted-2);line-height:1.75;}
+  .fgrid .r{font-size:12.5px;color:var(--muted);}
+  .fgrid .r b{color:var(--gold-soft);}
+</style>
+
+<style>
+  /* ===== THEME SÁNG ===== */
+  :root[data-theme="light"]{
+    --navy-900:#fdfcf9; --navy-800:#f4f6fa;
+    --line:#c9d2e2; --line-2:#e3e8f1;
+    --red:#c9151f; --red-soft:#d81f2b;
+    --gold:#c08c07; --gold-soft:#8a6206;
+    --white:#16233d; --muted:#55637f; --muted-2:#8090aa;
+    --card:#ffffff; --card-2:#f7f9fd; --aqua:#2f7cc0; --green:#2f9c62;
+    --paper:rgba(20,35,70,.035);
+    --bg-panel:rgba(247,249,253,.9); --bg-cta:rgba(255,255,255,.92); --bg-bar:rgba(253,252,249,.96);
+    --bg-step:#ffffff; --bg-shot:#f2f2ea; --sep:rgba(20,35,70,.09); --dot:rgba(20,35,70,.14);
+  }
+  :root[data-theme="light"] body{
+    background:
+      linear-gradient(var(--paper) 1px,transparent 1px) 0 0/100% 30px,
+      linear-gradient(90deg,var(--paper) 1px,transparent 1px) 0 0/30px 100%,
+      radial-gradient(1100px 520px at 82% -8%,#eef2fb 0%,transparent 62%),
+      var(--navy-900);
+  }
+  /* logo: bản navy cho nền sáng */
+  :root[data-theme="light"] .mlogo{background-image:url("{{LOGO_LIGHT}}");}
+  /* sơ đồ SVG giữ nền tối để nét vẽ luôn đọc được */
+  :root[data-theme="light"] .fg-wrap{border-color:#1d3763;}
+  :root[data-theme="light"] blockquote p{color:#0f1a30;}
+  :root[data-theme="light"] .wow{background:radial-gradient(500px 200px at 50% 0%,rgba(244,180,35,.16),transparent),linear-gradient(160deg,#fffdf6,#fff);}
+  :root[data-theme="light"] .wow .eq .p1{color:#16233d;}
+  :root[data-theme="light"] .lede{color:#26334d;}
+  :root[data-theme="light"] tr.hi td{background:rgba(201,21,31,.05);}
+  :root[data-theme="light"] .duo .neg .b{color:#b0323a;}
+  :root[data-theme="light"] .duo .pos .b{color:#1f8551;}
+  :root[data-theme="light"] .note{background:rgba(244,180,35,.12);color:#3a4560;}
+  :root[data-theme="light"] .cta{box-shadow:0 6px 26px -18px rgba(20,35,70,.5);}
+  :root[data-theme="light"] .bigcta{box-shadow:0 10px 34px -22px rgba(20,35,70,.55);}
+  :root[data-theme="light"] .chapbar{box-shadow:0 1px 0 rgba(20,35,70,.06);}
+
+  /* chữ thương hiệu khi không có logo */
+  .wordmark{font-weight:800;font-size:20px;letter-spacing:-.3px;color:var(--white);}
+  .wordmark:first-letter{color:var(--red);}
+
+  /* nút chuyển nền */
+  .themebtn{margin-left:auto;align-self:center;flex:none;display:inline-flex;align-items:center;gap:8px;
+    background:none;border:1px solid var(--line-2);border-radius:999px;color:var(--muted);
+    font-family:inherit;font-size:12px;font-weight:600;padding:7px 14px;cursor:pointer;transition:.18s;white-space:nowrap;}
+  .themebtn:hover{color:var(--white);border-color:var(--muted-2);}
+  .themebtn .ic{font-size:13px;line-height:1;}
+  @media(max-width:640px){.themebtn .tx{display:none;} .themebtn{padding:7px 10px;}}
+</style>
+
+</head>
+
+<body>
+<div id="progress"></div>
+
+<header class="cover">
+  <div class="cover-in">
+    <div class="topbar">
+      <!-- Có logo: giữ .mlogo, xoá .wordmark. Không có logo: xoá .mlogo, giữ .wordmark -->
+      <div class="mlogo" role="img" aria-label="{{BRAND_NAME}}" style="height:36px;width:200px"></div>
+      <div class="wordmark">{{BRAND_NAME}}</div>
+      <div class="tg">Ebook · Ghi chép &amp; hệ thống hóa</div>
+    </div>
+    <div class="eyebrow">Chuỗi 2 buổi · Tên người dạy</div>
+    <h1>Tên ebook: <em>cụm từ nhấn mạnh</em></h1>
+    <p class="sub">Một đoạn phụ đề nói rõ hành trình của cuốn sách: <b>vấn đề gốc</b> → <b>cách nghĩ đúng</b> → <b>việc cụ thể để làm</b>. Mỗi chương khép lại bằng việc làm ngay.</p>
+    <div class="credits">
+      <div><div class="k">Nội dung bài giảng</div><div class="v">Tên người dạy<small>Chức danh · Đơn vị</small></div></div>
+      <div><div class="k">Biên soạn &amp; hệ thống hóa</div><div class="v">{{EDITOR_NAME}}<small>{{EDITOR_TITLE}}</small></div></div>
+      <div><div class="k">Thời gian</div><div class="v">dd – dd / mm / yyyy<small>2 buổi · Online</small></div></div>
+      <div><div class="k">Dành cho</div><div class="v">Đối tượng người đọc<small>mô tả ngắn</small></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="chapbar">
+  <div class="in">
+    <button class="on" data-p="c1"><span class="d">Chương 1</span>Tên chương một</button>
+    <button data-p="c2"><span class="d">Chương 2</span>Tên chương hai</button>
+    <button class="cta" data-p="c3"><span class="d">Kết</span>Bước tiếp theo của bạn</button>
+    <button class="themebtn" id="themebtn" type="button" aria-label="Đổi nền sáng tối"><span class="ic">☀</span><span class="tx">Nền sáng</span></button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ==================== CHƯƠNG 1 ==================== -->
+<div class="panel-ch on" id="c1">
+  <div class="chap-open">
+    <div class="n">01</div>
+    <h2>Tên chương — <em>ý nhấn mạnh</em></h2>
+    <p class="dk">Đoạn dẫn nhập: đặt <strong>câu hỏi lớn</strong> mà chương này trả lời, để người đọc thấy vì sao phải đọc tiếp.</p>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" id="toc-c1">
+      <p class="tt">Chương 1</p>
+      <a href="#c1-s1">Khung tư duy</a>
+      <a href="#c1-s2">Công thức cốt lõi</a>
+      <a href="#c1-s3">Đúng và sai</a>
+      <a href="#c1-cta">Việc của bạn</a>
+    </nav>
+
+    <main>
+    <section id="c1-s1">
+      <div class="sh"><div class="rm">Phần I</div><h3>Khung tư duy</h3>
+        <p class="dk">Một câu tóm ý chính của phần.</p></div>
+
+      <p class="lede">Đoạn mở phần, viết cho <strong>người đọc</strong> (giọng "bạn"), giữ nguyên ví dụ và con số của người dạy.</p>
+
+      <figure>
+        <div class="fg-wrap">
+          <svg viewBox="0 0 900 300" role="img" aria-label="Sơ đồ 3 bước vẽ tay">
+            <path d="M60,150 C140,146 220,154 300,149" fill="none" stroke="#f4b423" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M62,154 C142,150 222,158 302,153" fill="none" stroke="#f4b423" stroke-width="1.5" stroke-linecap="round" opacity=".38"/>
+            <path d="M300,149 L286,140 M300,149 L287,160" stroke="#f4b423" stroke-width="3" stroke-linecap="round"/>
+            <path d="M420,150 C500,146 580,154 660,149" fill="none" stroke="#f4b423" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M660,149 L646,140 M660,149 L647,160" stroke="#f4b423" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="360" cy="150" r="52" fill="none" stroke="#e11d2a" stroke-width="3"/>
+            <circle cx="363" cy="147" r="54" fill="none" stroke="#e11d2a" stroke-width="1.4" opacity=".38"/>
+            <text x="40" y="110" font-family="Caveat, Bradley Hand, Noteworthy, Segoe Script, cursive" font-size="34" fill="#ffe6ab">NHÂN</text>
+            <text x="360" y="160" text-anchor="middle" font-family="Caveat, Bradley Hand, Noteworthy, Segoe Script, cursive" font-size="32" fill="#ffd7da">DUYÊN</text>
+            <text x="700" y="160" font-family="Caveat, Bradley Hand, Noteworthy, Segoe Script, cursive" font-size="38" fill="#7fe6a5">QUẢ</text>
+            <text x="450" y="260" text-anchor="middle" font-family="Caveat, Bradley Hand, Noteworthy, Segoe Script, cursive" font-size="24" fill="#8ec5ff">ví dụ sơ đồ vẽ tay — thay bằng sơ đồ của người dạy</text>
+          </svg>
+        </div>
+        <figcaption>Chú giải sơ đồ: ý nghĩa từng màu mực, chữ viết tắt.</figcaption>
+      </figure>
+
+      <blockquote class="big"><p>Câu chốt đắt nhất của phần, giữ nguyên lời người dạy.</p><cite>Tên người dạy</cite></blockquote>
+    </section>
+
+    <section id="c1-s2">
+      <div class="sh"><div class="rm">Phần II</div><h3>Công thức cốt lõi</h3></div>
+      <div class="wow">
+        <div class="lbl">Công thức</div>
+        <div class="eq"><span class="p1">Vế một</span><span class="op">×</span><span class="p2">Vế hai</span><span class="op">=</span><span class="res">Kết quả</span></div>
+        <div class="note2">Một dòng diễn giải công thức.</div>
+      </div>
+      <table>
+        <tr><th></th><th>Bước</th><th>Làm gì</th></tr>
+        <tr><td class="n">01</td><td><b>Tên bước</b></td><td>Mô tả ngắn, có con số cụ thể nếu người dạy đưa ra.</td></tr>
+        <tr class="hi"><td class="n">02</td><td><b>Bước quan trọng nhất</b></td><td>Dòng tô nhấn bằng <code>tr.hi</code>.</td></tr>
+        <tr><td class="n">03</td><td><b>Tên bước</b></td><td>Mô tả ngắn.</td></tr>
+      </table>
+    </section>
+
+    <section id="c1-s3">
+      <div class="sh"><div class="rm">Phần III</div><h3>Đúng và sai</h3></div>
+      <div class="duo">
+        <div class="neg"><div class="h">Cách thường làm</div><div class="b">Bắt đầu từ công cụ</div><div class="d">Vì sao cách này thất bại.</div></div>
+        <div class="pos"><div class="h">Cách nên làm</div><div class="b">Bắt đầu từ cái gốc</div><div class="d">Vì sao cách này bền.</div></div>
+      </div>
+      <div class="chain">
+        <div class="lk"><span class="ar">▸</span><div>Mắt xích logic thứ nhất dẫn tới <b>hệ quả</b>.</div></div>
+        <div class="lk"><span class="ar">▸</span><div>Mắt xích thứ hai.</div></div>
+      </div>
+    </section>
+
+    <section id="c1-cta">
+      <div class="cta">
+        <div class="lb">Việc của bạn sau chương 1</div>
+        <h3>Tiêu đề dạng mệnh lệnh</h3>
+        <p class="sub2">Ba việc làm được ngay trong tuần này.</p>
+        <ul class="todo">
+          <li><b>Việc một</b> — mô tả cụ thể.<span class="q">Câu hỏi tự soi in nghiêng?</span></li>
+          <li><b>Việc hai</b> — mô tả cụ thể.<span class="q">Câu hỏi tự soi?</span></li>
+          <li><b>Việc ba</b> — mô tả cụ thể.<span class="q">Câu hỏi tự soi?</span></li>
+        </ul>
+      </div>
+      <div class="navrow"><span></span><button data-go="c2">Chương tiếp theo → <b>Tên chương hai</b></button></div>
+    </section>
+    </main>
+  </div>
+</div>
+
+<!-- ==================== CHƯƠNG 2 ==================== -->
+<div class="panel-ch" id="c2">
+  <div class="chap-open">
+    <div class="n">02</div>
+    <h2>Tên chương hai — <em>ý nhấn mạnh</em></h2>
+    <p class="dk">Đoạn <strong>nối mạch từ chương trước</strong>, để người đọc lần đầu vẫn hiểu.</p>
+  </div>
+  <div class="layout">
+    <nav class="toc" id="toc-c2">
+      <p class="tt">Chương 2</p>
+      <a href="#c2-s1">Các bước</a>
+      <a href="#c2-cta">Việc của bạn</a>
+    </nav>
+    <main>
+    <section id="c2-s1">
+      <div class="sh"><div class="rm">Phần I</div><h3>Các bước</h3></div>
+      <div class="steps">
+        <div><div class="s">Bước 1</div><div class="t">Mô tả bước một.</div></div>
+        <div><div class="s">Bước 2</div><div class="t">Mô tả bước hai.</div></div>
+        <div><div class="s">Bước 3</div><div class="t">Mô tả bước ba.</div></div>
+        <div><div class="s">Bước 4</div><div class="t">Mô tả bước bốn.</div></div>
+      </div>
+      <div class="panel"><div class="pt">Ví dụ thực tế</div><p>Case cụ thể người dạy kể — dùng <code>.panel</code> tiết chế, đừng lạm dụng.</p></div>
+    </section>
+    <section id="c2-cta">
+      <div class="cta">
+        <div class="lb">Việc của bạn sau chương 2</div>
+        <h3>Tiêu đề dạng mệnh lệnh</h3>
+        <ul class="todo">
+          <li><b>Việc một</b> — mô tả.<span class="q">Câu hỏi tự soi?</span></li>
+          <li><b>Việc hai</b> — mô tả.<span class="q">Câu hỏi tự soi?</span></li>
+          <li><b>Việc ba</b> — mô tả.<span class="q">Câu hỏi tự soi?</span></li>
+        </ul>
+      </div>
+      <div class="navrow"><button data-go="c1">← Quay lại chương 1</button><button data-go="c3">Tiếp → <b>Bước tiếp theo</b></button></div>
+    </section>
+    </main>
+  </div>
+</div>
+
+<!-- ==================== KẾT ==================== -->
+<div class="panel-ch" id="c3">
+  <div class="final-hero">
+    <div class="n">Kết</div>
+    <h2>Bản đồ đã có. <em>Giờ là bước đi.</em></h2>
+    <p>Lớp 1 — bắc cầu cảm xúc: tóm giá trị đã trao + khoảng trống còn lại + một câu chốt trong bài làm bản lề.</p>
+  </div>
+
+  <!-- Lớp 2 — bằng chứng: chỉ khi có slide chương trình của CHÍNH thương hiệu -->
+  <div class="deck">
+    <figure><div class="shot" style="aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;line-height:1.4;color:var(--muted-2);font-size:14px">[ Ảnh slide chương trình ]</div>
+      <div class="cap"><b>Lộ trình</b>Một câu tóm tắt slide.</div></figure>
+  </div>
+
+  <div class="cta">
+    <div class="lb">Ba việc làm ngay</div>
+    <h3>Từ miễn phí tới cam kết chính</h3>
+    <ul class="todo">
+      <li><b>Miễn phí, 2 phút</b> — bước đầu không rào cản.</li>
+      <li><b>Tự làm, 1 buổi</b> — áp dụng một bài tập trong ebook.</li>
+      <li><b>Cam kết chính</b> — tham gia chương trình (giá, điều kiện do chủ sản phẩm cung cấp).</li>
+    </ul>
+  </div>
+
+  <!-- Khối chốt: XOÁ nếu nội dung là của diễn giả bên ngoài hoặc chưa có sản phẩm -->
+  <div class="bigcta">
+    <div class="t">Tên chương trình</div>
+    <a class="u" href="#">link-dang-ky.com</a>
+    <div class="d">Hướng dẫn đăng ký và xác nhận. Thông tin thanh toán chỉ thêm khi chủ thương hiệu xác nhận.</div>
+  </div>
+
+  <blockquote><p>Bộ câu chốt cả khóa — mỗi câu một dòng.</p></blockquote>
+  <div class="navrow"><button data-go="c1">← Về chương 1</button><span></span></div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="l">
+        <span class="mlogo" role="img" aria-label="{{BRAND_NAME}}" style="display:inline-block;height:22px;width:124px"></span>
+        <span class="wordmark" style="font-size:16px">{{BRAND_NAME}}</span>
+        <p style="margin:12px 0 0">Ebook được hệ thống hóa từ ghi chép trực tiếp tại lớp của chuỗi <b>“Tên chuỗi bài học”</b>, bám theo bài giảng của Tên người dạy.</p>
+        <p style="margin:8px 0 0"><a href="{{LIBRARY_URL}}">← Thư viện bài học</a></p>
+      </div>
+      <div class="r">
+        <div>Nội dung bài giảng: <b>Tên người dạy</b></div>
+        <div>Biên soạn: <b>{{EDITOR_NAME}}</b></div>
+        <div>dd / mm / yyyy</div>
+        <div style="margin-top:10px;letter-spacing:.28em;font-size:9.5px;text-transform:uppercase;color:var(--muted-2)">{{BRAND_TAGLINE}}</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var pb=document.getElementById('progress');
+  function upd(){var h=document.documentElement,t=h.scrollTop||document.body.scrollTop,m=(h.scrollHeight-h.clientHeight)||1;
+    pb.style.width=Math.min(100,(t/m)*100)+'%';}
+  window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd();
+
+  // ----- đổi nền sáng / tối -----
+  var tb=document.getElementById('themebtn'), light=false;
+  tb.addEventListener('click', function(){
+    light=!light;
+    document.documentElement.setAttribute('data-theme', light?'light':'dark');
+    tb.querySelector('.ic').textContent = light?'☾':'☀';
+    tb.querySelector('.tx').textContent = light?'Nền tối':'Nền sáng';
+  });
+
+  var btns=document.querySelectorAll(".chapbar button:not(.themebtn)");
+  var panels=document.querySelectorAll('.panel-ch');
+  function show(id){
+    panels.forEach(function(p){p.classList.toggle('on', p.id===id);});
+    btns.forEach(function(b){b.classList.toggle('on', b.getAttribute('data-p')===id);});
+    window.scrollTo(0,0); upd();
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ show(b.getAttribute('data-p')); }); });
+  document.querySelectorAll('[data-go]').forEach(function(b){
+    b.addEventListener('click', function(){ show(b.getAttribute('data-go')); });
+  });
+
+  var links=document.querySelectorAll('nav.toc a'), map={};
+  links.forEach(function(a){var h=a.getAttribute('href'); if(h&&h.charAt(0)==='#'){map[h.slice(1)]=a;}});
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('active');});
+      var a=map[e.target.id]; if(a){a.classList.add('active');}
+    }});
+  },{rootMargin:'-25% 0px -60% 0px'});
+  document.querySelectorAll('main section').forEach(function(s){io.observe(s);});
+})();
+</script>
+</body>
+</html>
